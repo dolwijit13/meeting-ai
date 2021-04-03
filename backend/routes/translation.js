@@ -13,9 +13,8 @@ const target = ["th", "ja"];
 
 const { translateJSON } = new AWSTranslateJSON(awsConfig, source, target);
 
-/* GET users listing. */
-router.get('/', async (req, res, next) => {
-  const translated = await translateJSON({ key: "my text here" });
+router.post('/', async (req, res, next) => {
+  const translated = await translateJSON({ key: req.body.key });
   res.send(translated);
 });
 
