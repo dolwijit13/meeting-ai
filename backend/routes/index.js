@@ -7,8 +7,9 @@ router.get('/', function(req, res, next) {
 });
 
 router.post('/upload', async (req, res, next) => {
-	console.log(req.body);
-	res.send({test: 'test'});
+	console.log(req.files.File)
+	const file = req.files.File
+	res.send({file});
 });
 
 module.exports = router;

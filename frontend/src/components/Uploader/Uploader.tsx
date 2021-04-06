@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { Component, useState } from 'react';
 import axios from 'axios'
 
 const ENDPOINT = process.env.REACT_APP_BACKEND || 'http://localhost:10000';
@@ -15,13 +15,13 @@ export const Uploader: React.FC<IUploader> = (props) => {
     };
 
     const handleSubmit = (event: any) => {
+        const config = {     
+            headers: { 'Content-Type': 'multipart/form-data' }
+        }
         const formData = new FormData();
 
-        console.log(selectedFile);
 		formData.append('File', selectedFile);
-        console.log(formData);
-        fetch(`${ENDPOINT}/upload`, { method: 'POST', body: formData})
-            .then((response) => response.json())
+        axios.post(`${ENDPOINT}/upload`, formData, config)
             .then((res: any) => {
                 console.log(res.data);
             })
