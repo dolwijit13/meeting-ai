@@ -10,7 +10,6 @@ const config = new AWS.Config({
 })
 const client = new AWS.Rekognition(config);
 
-/* GET users listing. */
 router.get('/', async (req, res, next) => {
 	const params = {
 		Image: {
@@ -20,7 +19,7 @@ router.get('/', async (req, res, next) => {
 			},
 		},
 		Attributes: ['ALL']
-	}
+	};
 	client.detectFaces(params, function(err, response) {
 		if (err) {
 			console.log(err, err.stack); // an error occurred
