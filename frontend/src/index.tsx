@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import { HomePage } from './pages/HomePage/HomePage';
+import { ResultPage } from './pages/ResultPage/ResultPage';
 import {
   BrowserRouter as Router,
   Switch,
@@ -13,6 +14,7 @@ ReactDOM.render(
   <React.StrictMode>
     <Router>
       <Switch>
+        <Route path='/result' component={() => <ResultPage />} />
         <Route path='/' component={() => <HomePage />} />
       </Switch>
     </Router>
