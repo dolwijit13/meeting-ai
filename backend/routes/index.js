@@ -10,6 +10,7 @@ const config = new AWS.Config({
 var s3 = new AWS.S3(config);
 var ffmpeg = require('fluent-ffmpeg');
 var streamBuffers = require('stream-buffers');
+const fs = require('fs');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -17,45 +18,61 @@ router.get('/', function(req, res, next) {
 });
 
 router.post('/upload', async (req, res, next) => {
-	const file = req.files.File;
-	// const params = {
-	// 	Bucket: process.env.AWS_REKOGNITION_BUCKET,
-	// 	Key: file.name,
-	// 	Body: file.data
-	// }
-	// s3.putObject(params, function (perr, pres) {
-	// 	if (perr) {
-	// 		console.log("Error uploading data: ", perr);
-	// 	} else {
-	// 		console.log("Successfully uploaded data to myBucket/myKey");
-	// 	}
-	// });
+	// random id of these video, use as folder name both in local and s3 (not handle case of duplicate id)
+	const id = Math.floor(Math.random() * 10000000)
+	console.log(id);
 
-	// const params = {
-	// 	Bucket: process.env.AWS_REKOGNITION_BUCKET,
-	// 	Key: 'test.mp4',
-	// }
+	fs.mkdirSync(`output_image/${id}`, { recursive: true })
+	const file = req.files.File;
+
+	const bucketStreamParams = {
+		Bucket: process.env.AWS_REKOGNITION_BUCKET,
+		Key: `${id}/video.mp4`,
+		Body: file.data
+	}
+	s3.putObject(bucketStreamParams, function (perr, pres) {
+		if (perr) {
+			console.log("Error uploading data: ", perr);
+		} else {
+			console.log("Successfully uploaded video");
+		}
+	});
 
 	// Retrieve object stream
-	// let readStream = s3.getObject(params).createReadStream();
-	var readStream = new streamBuffers.ReadableStreamBuffer({
+	const readStream = new streamBuffers.ReadableStreamBuffer({
 		frequency: 1,      // in milliseconds.
 		chunkSize: 1048576     // in bytes.
 	  }); 
-	readStream.put(file.data);
+	readStream.push(file.data);
+	readStream.push(null);
+
 
 	// Set up the ffmpeg process
 	let ffmpegProcess = new ffmpeg(readStream)
-		//Add your args here
-		.on('end', function() {
-			console.log('Screenshots taken');
-		  })
-		  .output('output_image/screenshot-%04d.png')
-		  .outputOptions(
-			  '-q:v', '8',
-			  '-vf', 'fps=1/10,scale=-1:360',
-		  )
-		  .run()
+		.output(`output_image/${id}/screenshot-%04d.jpg`)
+		.outputOptions(
+			'-q:v', '8',
+			'-vf', 'fps=1/10,scale=-1:360'
+		)
+		.on('end', () => {
+			fs.readdir(`output_image/${id}`, (err, files) => {
+				files.forEach(file => {
+					const bucketStreamParams = {
+						Bucket: process.env.AWS_REKOGNITION_BUCKET,
+						Key: `${id}/${file}`,
+						Body: fs.readFileSync(`output_image/${id}/${file}`)
+					}
+					s3.putObject(bucketStreamParams, function (perr, pres) {
+						if (perr) {
+							console.log("Error uploading data: ", perr);
+						} else {
+							console.log(`Successfully uploaded ${file}`);
+						}
+					});
+				});
+			});
+		})
+		.run();
 	res.send({test: 'test'});
 });
 

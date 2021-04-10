@@ -1,5 +1,7 @@
-import React, { Component, useState } from 'react';
+import React, { useState } from 'react';
 import axios from 'axios'
+import { Button } from '../Button/Button';
+import styles from './Uploader.module.scss';
 
 const ENDPOINT = process.env.REACT_APP_BACKEND || 'http://localhost:10000';
 
@@ -14,7 +16,7 @@ export const Uploader: React.FC<IUploader> = (props) => {
         console.log(event.target.files[0]);
     };
 
-    const handleSubmit = (event: any) => {
+    const handleSubmit = () => {
         const config = {     
             headers: { 'Content-Type': 'multipart/form-data' }
         }
@@ -37,9 +39,9 @@ export const Uploader: React.FC<IUploader> = (props) => {
                 <input type="file" name="file" onChange={onChangeHandler} />
             </label>
             <br /><br />
-            <button onClick={handleSubmit}>
-                Upload
-            </button>
+            <div className={styles.footer}>
+                <Button content={"Submit"} onClick={handleSubmit} classname={styles.submit} />
+            </div>
         </div>
     );
 }
