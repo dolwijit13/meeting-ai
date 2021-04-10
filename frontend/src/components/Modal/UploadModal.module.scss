@@ -35,14 +35,6 @@
   height: 60px;
 }
 
-:local(.footer) {
-  position: absolute;
-  width: 100%;
-  bottom: 16px;
-  display: flex;
-  justify-content: center;
-}
-
 :local(.personImage) {
   position: absolute;
   bottom: 0px;
@@ -52,9 +44,4 @@
   position: absolute;
   bottom: 0px;
   right: 0px;
-}
-
-:local(.submit) {
-  display: flex;
-  background: #576B6B;
 }
