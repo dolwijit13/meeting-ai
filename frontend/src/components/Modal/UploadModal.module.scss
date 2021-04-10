@@ -1,0 +1,60 @@
+:local(.bg) {
+  background: rgba(0, 0, 0, 0.5);
+  width: 100vw;
+  height: 100vh;
+  z-index: 50;
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+:local(.box) {
+  width: 80%;
+  height: 80%;
+  display: flex;
+  background: #AB6057;
+  border-radius: 24px;
+  flex-direction: column;
+  position: relative;
+  filter: drop-shadow(8px 8px 8px rgba(0, 0, 0, 0.8));
+}
+
+:local(.header) {
+  margin-top: 16px;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 48px;
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  text-align: center;
+  color: #E4D9C5;
+  text-shadow: 4px 4px 4px rgba(0, 0, 0, 0.5);
+  position: relative;
+  height: 60px;
+}
+
+:local(.footer) {
+  position: absolute;
+  width: 100%;
+  bottom: 16px;
+  display: flex;
+  justify-content: center;
+}
+
+:local(.personImage) {
+  position: absolute;
+  bottom: 0px;
+}
+
+:local(.boxImages) {
+  position: absolute;
+  bottom: 0px;
+  right: 0px;
+}
+
+:local(.submit) {
+  display: flex;
+  background: #576B6B;
+}
