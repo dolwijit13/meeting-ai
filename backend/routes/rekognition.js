@@ -1,6 +1,3 @@
-var express = require('express');
-var router = express.Router();
-
 const AWS = require('aws-sdk')
 
 const config = new AWS.Config({
@@ -10,17 +7,24 @@ const config = new AWS.Config({
 })
 const client = new AWS.Rekognition(config);
 
-router.get('/', async (req, res, next) => {
+module.exports = {
+	getEmotions: (id, pictures) => {
+		console.log(id, pictures);
+		// return getEmotion(`${id}/${pictures[0]}`)
+	}
+}
+
+const getEmotion = (path) => {
 	const params = {
 		Image: {
 			S3Object: {
 				Bucket: process.env.AWS_REKOGNITION_BUCKET,
-				Name: 'test.png'
+				Name: path
 			},
 		},
 		Attributes: ['ALL']
 	};
-	client.detectFaces(params, function(err, response) {
+	return client.detectFaces(params, function(err, response) {
 		if (err) {
 			console.log(err, err.stack); // an error occurred
 		} else {
@@ -29,9 +33,7 @@ router.get('/', async (req, res, next) => {
 					Emotions: faceDetail.Emotions
 				}
 			});
-			res.send(response);
+			return response
 		}
 	});
-});
-
-module.exports = router;
+}
