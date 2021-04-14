@@ -102,8 +102,8 @@ router.post('/upload', async (req, res, next) => {
 	readStream.push(null);
 
 	const pictures = await makeSnapShots(id, readStream);
-	rekognition.getEmotions(id, pictures);
-	res.send({test: 'test'});
+	const rekognitionResult = await rekognition.getEmotionFromSnapshots(id, pictures);
+	res.send({rekognition: rekognitionResult});
 });
 
 module.exports = router;
