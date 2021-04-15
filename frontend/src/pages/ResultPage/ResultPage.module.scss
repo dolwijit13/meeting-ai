@@ -75,3 +75,8 @@
 :local(.selectedLang) {
   color: black;
 }
+
+:local(.emotions) {
+  display: flex;
+  justify-content: space-around;
+}
