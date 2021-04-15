@@ -1,12 +1,15 @@
 import classnames from 'classnames';
 import React, { useState } from 'react';
 import styles from './ResultPage.module.scss';
+import { useLocation } from "react-router";
 
 interface IResultPage {}
 
-export const ResultPage: React.FC<IResultPage> = (props) => {
+export const ResultPage: React.FC<IResultPage> = (props: any) => {
   const [selectedLang, setSelectedLang] = useState<number>(0);
   const languages = ['TH', 'EN', 'JA'];
+  const location = useLocation<any>();
+  const { rekognition } = location.state;
 
   const languageChoices = languages.map((lang, idx) => (
     <div className={styles.langArea}>
@@ -26,7 +29,7 @@ export const ResultPage: React.FC<IResultPage> = (props) => {
         Result
       </div>
       <div className={styles.emotionSection}>
-        <div className={styles.label}>Emotions:</div>
+        <div className={styles.label}>Emotions: {JSON.stringify(rekognition)} </div>
       </div>
       <div className={styles.recordSection}>
         <div className={styles.label}>Record:</div>
