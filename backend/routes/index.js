@@ -84,13 +84,6 @@ const uploadSnapshots = async (id) => {
 }
 
 router.post('/upload', async (req, res, next) => {
-	res.send({rekognition: {
-		HAPPY: 800,
-		ANGRY: 150,
-		CALM: 50,
-		n: 10
-	}});
-	return;
 	// random id of these video, use as folder name both in local and s3 (not handle case of duplicate id)
 	const id = Math.floor(Math.random() * 10000000)
 	console.log(id);

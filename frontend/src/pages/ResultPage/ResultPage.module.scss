@@ -79,4 +79,13 @@
 :local(.emotions) {
   display: flex;
   justify-content: space-around;
+  font-size: 14px;
+}
+
+:local(.emotionIcon) {
+  width: 48px;
+}
+
+:local(.emotion) {
+  text-align: center;
 }
