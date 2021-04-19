@@ -14,6 +14,8 @@ const fileUpload = require('express-fileupload');
 
 var translationRouter = require('./routes/translation');
 
+var comprehendRouter = require('./routes/comprehend');
+
 var app = express();
 
 // view engine setup
@@ -32,6 +34,7 @@ app.use(fileUpload());
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/translation', translationRouter);
+app.use('/comprehend', comprehendRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
