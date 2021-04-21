@@ -12,22 +12,27 @@ const config = new AWS.Config({
 });
 /* GET users listing. */
 const transcribeService = new AWS.TranscribeService(config);
-router.post("/", function(req,res,next){
-    let uri = req.body.uri
+const createTranscription = (uri)=>{
+  return new Promise((resolve,reject)=>{
     const params = {
-        Media: {
-          /* required */
-          MediaFileUri: uri
-        },
-        TranscriptionJobName: Date.now().toString(),
-        IdentifyLanguage: true
-      };
-      transcribeService.startTranscriptionJob(params, function(err, data) {
-        if (err) console.log(err, err.stack);
-        // an error occurred
-        else console.log(data); // successful response
-      });
-})
+      Media: {
+        /* required */
+        MediaFileUri: uri
+      },
+      TranscriptionJobName: Date.now().toString(),
+      IdentifyLanguage: true
+    };
+    transcribeService.startTranscriptionJob(params, function(err, data) {
+      if (err) reject(err);
+      // an error occurred
+      else {
+        console.log("create transcription successs")
+        return resolve(data);
+      } // successful response
+    });
+  })
+    
+}
 router.get("/", async function(req, res, next) {
     
   const params = {
@@ -42,7 +47,18 @@ router.get("/", async function(req, res, next) {
       if (err) throw err // an error occurred
       else{
         // console.log(data.TranscriptionJobSummaries[0].TranscriptionJobName); 
+        if (data.TranscriptionJobSummaries[0].TranscriptionJobStatus !== "COMPLETED"){
+          res.send({
+            TranscriptionJobName:data.TranscriptionJobSummaries[0].TranscriptionJobName,
+            TranscriptionJobStatus:data.TranscriptionJobSummaries[0].TranscriptionJobStatus,
+            CreationTime:data.TranscriptionJobSummaries[0].CreationTime,
+            LanguageCode:data.TranscriptionJobSummaries[0].LanguageCode
+          })
+          return
+        }
         params2.TranscriptionJobName = data.TranscriptionJobSummaries[0].TranscriptionJobName
+        // console.log(data.TranscriptionJobSummaries[0])
+        
         transcribeService.getTranscriptionJob(params2, async function(err, data) {
           if (err) throw err
           // an error occurred
@@ -62,11 +78,11 @@ router.get("/", async function(req, res, next) {
     });
     
   }catch(err){
-    console.log(err,err.stack)
+    console.log("this",err,err.stack)
   }
   
   
   
 });
-
-module.exports = router;
+transcribeRouter = router
+module.exports = {transcribeRouter,createTranscription};
