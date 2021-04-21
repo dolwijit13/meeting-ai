@@ -13,11 +13,11 @@ const config = new AWS.Config({
 /* GET users listing. */
 const transcribeService = new AWS.TranscribeService(config);
 router.post("/", function(req,res,next){
+    let uri = req.body.uri
     const params = {
         Media: {
           /* required */
-          MediaFileUri:
-            "s3://cloundcompfinalproject2021/agenda and meeting minutes templates.mp4"
+          MediaFileUri: uri
         },
         TranscriptionJobName: Date.now().toString(),
         IdentifyLanguage: true
