@@ -2,7 +2,7 @@ var express = require("express");
 var router = express.Router();
 const AWS = require("aws-sdk");
 const dotenv = require("dotenv");
-
+var axios = require("axios");
 dotenv.config();
 
 const config = new AWS.Config({
@@ -19,7 +19,7 @@ router.post("/", function(req,res,next){
           MediaFileUri:
             "s3://cloundcompfinalproject2021/agenda and meeting minutes templates.mp4"
         },
-        TranscriptionJobName: "test",
+        TranscriptionJobName: Date.now().toString(),
         IdentifyLanguage: true
       };
       transcribeService.startTranscriptionJob(params, function(err, data) {
@@ -28,19 +28,44 @@ router.post("/", function(req,res,next){
         else console.log(data); // successful response
       });
 })
-router.get("/", function(req, res, next) {
+router.get("/", async function(req, res, next) {
     
   const params = {
-    TranscriptionJobName: "test" /* required */
+    MaxResults: 1 /* required */
   };
-  transcribeService.getTranscriptionJob(params, async function(err, data) {
-    if (err) console.log(err, err.stack);
-    // an error occurred
-    else{
-        let uri = await data.TranscriptionJob.Transcript.TranscriptFileUri
-        res.redirect(uri); // successful response
-    } 
-  });
+  var params2= {
+    TranscriptionJobName: "" /* required */
+  };
+  
+  try{
+    transcribeService.listTranscriptionJobs(params,function(err, data) {
+      if (err) throw err // an error occurred
+      else{
+        // console.log(data.TranscriptionJobSummaries[0].TranscriptionJobName); 
+        params2.TranscriptionJobName = data.TranscriptionJobSummaries[0].TranscriptionJobName
+        transcribeService.getTranscriptionJob(params2, async function(err, data) {
+          if (err) throw err
+          // an error occurred
+          else{
+              let uri = await data.TranscriptionJob.Transcript.TranscriptFileUri
+              axios.get(uri).then(result=>{
+                // console.log(result.data.results.transcripts[0].transcript)
+                res.json({
+                  transcript:result.data.results.transcripts[0].transcript,
+                  language_code:result.data.results.language_code
+                }) // successful response
+              })
+              
+          } 
+        });
+      }
+    });
+    
+  }catch(err){
+    console.log(err,err.stack)
+  }
+  
+  
   
 });
 
