@@ -1,0 +1,12 @@
+:local(.footer) {
+    position: absolute;
+    width: 100%;
+    bottom: 16px;
+    display: flex;
+    justify-content: center;
+  }
+  
+:local(.submit) {
+display: flex;
+background: #576B6B;
+}

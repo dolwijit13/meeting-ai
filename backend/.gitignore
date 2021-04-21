@@ -25,3 +25,9 @@ coverage
 .env
 # Benchmarking
 benchmarks/graphs
+
+# Dotenv
+.env
+
+# Mock output image
+/output_image

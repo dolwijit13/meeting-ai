@@ -55,6 +55,7 @@ aws-sdk@^2.881.0:
   version "2.881.0"
   resolved "https://registry.yarnpkg.com/aws-sdk/-/aws-sdk-2.881.0.tgz#cda305c65f9c7198d0730464526c87f636cfdf3d"
   integrity sha512-jPjk2kfWxXzn5D1tch8DezTZ9V904GGxohWE/IK2zhvxn1GOrL42HyJlHg5uvISL1Mkf6ner/RLLuIjl7vYHBA==
+
   dependencies:
     buffer "4.9.2"
     events "1.1.1"
@@ -72,6 +73,12 @@ axios@^0.21.1:
   integrity sha512-dKQiRHxGD9PPRIUNIWvZhPTPpl1rf/OxTYKsqKUDjBwYylTvV7SjSHJb9ratfyzM6wCdLCOYLzs73qpg5c4iGA==
   dependencies:
     follow-redirects "^1.10.0"
+aws-translate-json@^0.0.3:
+  version "0.0.3"
+  resolved "https://registry.yarnpkg.com/aws-translate-json/-/aws-translate-json-0.0.3.tgz#d31c1528aa506129c76a0efa707c927e1e882670"
+  integrity sha512-294RsHGr/P24XES+JkALpZRMAXYRuMbgWLhc0YviHwW2f5D0Etk8BZhs0k8eEpj0LB1hw9p130SmimkEgDezfQ==
+  dependencies:
+    aws-sdk "^2.443.0"
 
 base64-js@^1.0.2:
   version "1.5.1"

@@ -1,0 +1,23 @@
+:local(.bg) {
+  width: 160px;
+  height: 72px;
+  background: #956A66;
+  border-radius: 24px;
+  filter: drop-shadow(8px 8px 8px rgba(0, 0, 0, 0.8));
+  display: flex;
+  justify-self: center;
+  align-self: center;
+  cursor: pointer;
+
+  .content {
+    font-style: normal;
+    font-weight: normal;
+    width: 100%;
+    font-size: 24px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #F1F2EE;
+    text-shadow: 4px 4px 4px rgba(0, 0, 0, 0.5);
+  }
+}
