@@ -16,7 +16,7 @@ const fs = require('fs');
 
 const rekognition = require('./rekognition');
 const { resolve } = require('path');
-const {createTranscription} = require('./transcribe');
+const {createTranscription, getTranscription} = require('./transcribe');
 /* GET home page. */
 router.get('/', function(req, res, next) {
   res.render('index', { title: 'Express' });
@@ -110,6 +110,23 @@ router.post('/upload', async (req, res, next) => {
 	const rekognitionResult = await rekognition.getEmotionFromSnapshots(id, pictures);
 	
 	res.send({rekognition: rekognitionResult});
+});
+
+router.get('/getdata', async (req, res, next) =>{
+	try{
+		const transcription = await getTranscription();
+		// if success :{Transcript : "content", LanguageCode: "en-US", TranscriptionJobStatus: "COMPLETED"}
+		// else : {TranscriptionJobName: "string", ... ,TranscriptionJobStatus:"sth"}
+		if (transcription.TranscriptionJobStatus != null && transcription.TranscriptionJobStatus != "COMPLETED"){
+			// send sth to tell client that it hasn't finished
+			return res.send({status : "INCOMPLETED"})
+		}
+		// return res.send(transcription)
+	}catch(err){
+		console.log(err)
+		res.status(500)
+		res.send(err)
+	}
 });
 
 module.exports = router;

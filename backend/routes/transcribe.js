@@ -67,8 +67,9 @@ const getTranscription = ()=>{
                 axios.get(uri).then(result=>{
                   // console.log(result.data.results.transcripts[0].transcript)
                   return resolve({
-                    transcript:result.data.results.transcripts[0].transcript,
-                    language_code:result.data.results.language_code
+                    Transcript:result.data.results.transcripts[0].transcript,
+                    LanguageCode:result.data.results.language_code,
+                    TranscriptionJobStatus:"COMPLETED",
                   }) // successful response
                 })
                 
