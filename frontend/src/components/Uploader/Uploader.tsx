@@ -20,6 +20,7 @@ export const Uploader: React.FC<IUploader> = (props) => {
     };
 
     const handleSubmit = () => {
+        if(selectedFile === '') return;
         setUploaded(true);
         const config = {     
             headers: { 'Content-Type': 'multipart/form-data' }
@@ -36,6 +37,8 @@ export const Uploader: React.FC<IUploader> = (props) => {
             })
     };
 
+    const submitStyle = selectedFile === '' ? styles.disabledSubmitButton : styles.enabledSubmitButton;
+
     return uploaded? 
     (
         <div>
@@ -44,13 +47,11 @@ export const Uploader: React.FC<IUploader> = (props) => {
     ):
     (
         <div>
-            <label>
-                Upload a file: <br /><br />
+            <div className={styles.inputWrapper}>
                 <input type="file" name="file" onChange={onChangeHandler} />
-            </label>
-            <br /><br />
+            </div>
             <div className={styles.footer}>
-                <Button content={"Submit"} onClick={handleSubmit} classname={styles.submit} />
+                <Button content={"Submit"} onClick={handleSubmit} classname={submitStyle} />
             </div>
         </div>
     );
