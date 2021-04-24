@@ -8,7 +8,7 @@ require('dotenv').config()
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
-var transcribeRouter = require('./routes/transcribe');
+var {transcribeRouter} = require('./routes/transcribe');
 var rekognitionRouter = require('./routes/rekognition');
 var cors = require('cors');
 const fileUpload = require('express-fileupload');
