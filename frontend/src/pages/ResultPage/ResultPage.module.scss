@@ -19,6 +19,7 @@
 }
 
 :local(.emotionSection),
+:local(.entitiesSection),
 :local(.recordSection) {
   background-color: #576B6B;
   display: flex;
@@ -28,6 +29,29 @@
   align-self: center;
   box-shadow: 8px 8px 4px rgba(0, 0, 0, 0.8);
   border-radius: 40px;
+}
+
+:local(.entitiesSection) {
+  height: fit-content;
+  margin-top: 24px;
+}
+
+table, th, td {
+  border: 1px solid white;
+}
+
+:local(table) {
+  border-collapse: collapse;
+  margin: auto;
+  font-size: 20px;
+  color: white;
+  text-shadow: none;
+  font-weight: normal;
+  margin-bottom: 16px;
+}
+
+:local(td) {
+  padding: 0 8px;
 }
 
 :local(.recordSection) {
