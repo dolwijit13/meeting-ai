@@ -6,8 +6,10 @@
     "start": "node ./bin/www"
   },
   "dependencies": {
-    "aws-sdk": "^2.879.0",
+    "@ffmpeg-installer/ffmpeg": "^1.0.20",
+    "aws-sdk": "^2.881.0",
     "aws-translate-json": "^0.0.3",
+    "axios": "^0.21.1",
     "cookie-parser": "~1.4.4",
     "cors": "^2.8.5",
     "debug": "~2.6.9",

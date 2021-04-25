@@ -1,6 +1,5 @@
 var express = require('express');
 var router = express.Router();
-
 var AWS = require('aws-sdk')
 const config = new AWS.Config({
 	accessKeyId: process.env.AWS_REKOGNITION_ID,
@@ -8,18 +7,20 @@ const config = new AWS.Config({
 	region: process.env.AWS_REKOGNITION_REGION,
 })
 var s3 = new AWS.S3(config);
+const ffmpegPath = require('@ffmpeg-installer/ffmpeg').path;
 var ffmpeg = require('fluent-ffmpeg');
+ffmpeg.setFfmpegPath(ffmpegPath);
+
 var streamBuffers = require('stream-buffers');
 const fs = require('fs');
 
 const rekognition = require('./rekognition');
 const { resolve } = require('path');
-
+const {createTranscription, getTranscription} = require('./transcribe');
 /* GET home page. */
 router.get('/', function(req, res, next) {
   res.render('index', { title: 'Express' });
 });
-
 const uploadVideo = async (id, body) => {
 	const bucketStreamParams = {
 		Bucket: process.env.AWS_REKOGNITION_BUCKET,
@@ -90,9 +91,13 @@ router.post('/upload', async (req, res, next) => {
 
 	fs.mkdirSync(`output_image/${id}`, { recursive: true })
 	const file = req.files.File;
-
-	await uploadVideo(id, file.data);
-
+	try{
+		await uploadVideo(id, file.data);
+		await createTranscription(`s3://${process.env.AWS_REKOGNITION_BUCKET}/${id}/video.mp4`);
+	}catch(err){
+		console.log(err)
+	}
+	
 	// Retrieve object stream
 	const readStream = new streamBuffers.ReadableStreamBuffer({
 		frequency: 1,      // in milliseconds.
@@ -103,7 +108,25 @@ router.post('/upload', async (req, res, next) => {
 
 	const pictures = await makeSnapShots(id, readStream);
 	const rekognitionResult = await rekognition.getEmotionFromSnapshots(id, pictures);
+	
 	res.send({rekognition: rekognitionResult});
+});
+
+router.get('/getdata', async (req, res, next) =>{
+	try{
+		const transcription = await getTranscription();
+		// if success :{Transcript : "content", LanguageCode: "en-US", TranscriptionJobStatus: "COMPLETED"}
+		// else : {TranscriptionJobName: "string", ... ,TranscriptionJobStatus:"sth"}
+		if (transcription.TranscriptionJobStatus != null && transcription.TranscriptionJobStatus != "COMPLETED"){
+			// send sth to tell client that it hasn't finished
+			return res.send({status : "INCOMPLETED"})
+		}
+		// return res.send(transcription)
+	}catch(err){
+		console.log(err)
+		res.status(500)
+		res.send(err)
+	}
 });
 
 module.exports = router;

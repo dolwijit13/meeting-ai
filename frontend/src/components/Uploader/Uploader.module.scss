@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Mitr&display=swap');
+
 :local(.footer) {
     position: absolute;
     width: 100%;
@@ -6,7 +8,44 @@
     justify-content: center;
   }
   
-:local(.submit) {
-display: flex;
-background: #576B6B;
+:local(.disabledSubmitButton) {
+  display: flex;
+  background: #576B6B;
+  cursor: not-allowed;
+}
+
+:local(.enabledSubmitButton) {
+  display: flex;
+  background: #C09C6A;
+  color: black;
+}
+
+
+:local(.inputWrapper) {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 50vh;
+}
+
+input[type="file"] {
+  font-family: 'Mitr';
+}
+
+::-webkit-file-upload-button {
+  background: #C4C4C4;
+  height: 56px;
+  width: 120px;
+  border-radius: 8px;
+  font-size: 24px;
+  border: none;
+}
+
+:local(.loading) {
+  display: flex;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+    font-size: 48px;
+    margin-bottom: 48px;
 }
