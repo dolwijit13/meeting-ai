@@ -12,9 +12,6 @@ var {transcribeRouter} = require('./routes/transcribe');
 var rekognitionRouter = require('./routes/rekognition');
 var cors = require('cors');
 const fileUpload = require('express-fileupload');
-var translationRouter = require('./routes/translation');
-
-// var comprehendRouter = require('./routes/comprehend');
 
 var app = express();
 

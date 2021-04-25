@@ -14,6 +14,7 @@ export const ResultPage: React.FC<IResultPage> = (props: any) => {
   const lang = ['th', 'en', 'ja'];
   const location = useLocation<any>();
   const [record, setRecord] = useState<string>('');
+  const [entities, setEntities] = useState<any>({});
   const [translation, setTranslation] = useState<any>({});
 
   const { rekognition, id } = location.state;
@@ -42,26 +43,6 @@ export const ResultPage: React.FC<IResultPage> = (props: any) => {
                           })
                           .slice(0,5);
 
-  const entities = {
-    "Entities": [
-      {
-        "Text": "today",
-        "Score": 0.97,
-        "Type": "DATE",
-        "BeginOffset": 14,
-        "EndOffset": 19
-      },
-      {
-        "Text": "Seattle",
-        "Score": 0.95,
-        "Type": "LOCATION",
-        "BeginOffset": 23,
-        "EndOffset": 30
-      }
-    ],
-    "LanguageCode": "en"
-  };
-
   useEffect(() => {
     if (record === '') {
       const interval = setInterval(() => {
@@ -69,6 +50,7 @@ export const ResultPage: React.FC<IResultPage> = (props: any) => {
               .then((res: any) => {
                 if(res.data.status === "COMPLETED") {
                   setTranslation(res.data.translation);
+                  setEntities(res.data.entities);
                   setRecord(res.data.translation[lang[selectedLang]].key);
                   clearInterval(interval);            
                 }
@@ -96,6 +78,26 @@ export const ResultPage: React.FC<IResultPage> = (props: any) => {
     </div>
   ));
 
+  const entitiesDisplay = record === '' ?
+    <div className={styles.loader}>Loading...</div>:
+    <table id='entitries'>
+      <tbody>
+        <tr>
+          <th style={{width: "100px"}}>{'Type'}</th>
+          <th>{'Text'}</th>
+        </tr>
+        {entities["Entities"].map((entity: { Text: string; Type: string; }, index: number) => {
+          const { Text, Type } = entity
+          return (
+            <tr key={index}>
+              <td>{Type}</td>
+              <td>{Text}</td>
+            </tr>
+          )
+        })}
+      </tbody>
+    </table>
+
   const recordDisplay = record === '' ? 
   <div className={styles.loader}>Loading...</div> : <div className={styles.recordData}>{record}</div>;
   
@@ -116,23 +118,7 @@ export const ResultPage: React.FC<IResultPage> = (props: any) => {
       <div className={styles.entitiesSection}>
         <div className={styles.label}>
           Entities:
-          <table id='entitries'>
-            <tbody>
-              <tr>
-                <th style={{width: "100px"}}>{'Type'}</th>
-                <th>{'Text'}</th>
-              </tr>
-              {entities["Entities"].map((entity, index) => {
-                const { Text, Type } = entity
-                return (
-                  <tr key={index}>
-                    <td>{Type}</td>
-                    <td>{Text}</td>
-                  </tr>
-                )
-              })}
-            </tbody>
-          </table>
+          {entitiesDisplay}
         </div>
       </div>
       <div className={styles.recordSection}>

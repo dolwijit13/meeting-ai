@@ -18,6 +18,8 @@ const rekognition = require('./rekognition');
 const { resolve } = require('path');
 const {createTranscription, getTranscription} = require('./transcribe');
 const { translate } = require('./translation');
+const { detectEntity } = require('./comprehend');
+
 /* GET home page. */
 router.get('/', function(req, res, next) {
   res.render('index', { title: 'Express' });
@@ -197,7 +199,30 @@ router.get('/getdata/:id', async (req, res, next) =>{
     //   }
     // }
 
-		return res.send({ status: "COMPLETED", translation })
+    const entities = await Promise.resolve(detectEntity(transcription.Transcript));
+
+    // Mock data for entitries detection
+    // const entities = {
+    //   "Entities": [
+    //     {
+    //       "Text": "today",
+    //       "Score": 0.97,
+    //       "Type": "DATE",
+    //       "BeginOffset": 14,
+    //       "EndOffset": 19
+    //     },
+    //     {
+    //       "Text": "Seattle",
+    //       "Score": 0.95,
+    //       "Type": "LOCATION",
+    //       "BeginOffset": 23,
+    //       "EndOffset": 30
+    //     }
+    //   ],
+    //   "LanguageCode": "en"
+    // };
+
+		return res.send({ status: "COMPLETED", translation, entities })
 	}catch(err){
 		console.log(err)
 		res.status(500)
