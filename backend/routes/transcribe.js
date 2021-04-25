@@ -12,14 +12,14 @@ const config = new AWS.Config({
 });
 /* GET users listing. */
 const transcribeService = new AWS.TranscribeService(config);
-const createTranscription = (uri)=>{
+const createTranscription = (uri, id)=>{
   return new Promise((resolve,reject)=>{
     const params = {
       Media: {
         /* required */
         MediaFileUri: uri
       },
-      TranscriptionJobName: Date.now().toString(),
+      TranscriptionJobName: id,
       IdentifyLanguage: true
     };
     transcribeService.startTranscriptionJob(params, function(err, data) {
@@ -30,58 +30,33 @@ const createTranscription = (uri)=>{
         return resolve(data);
       } // successful response
     });
-  })
-    
+  });
 }
 
-const getTranscription = ()=>{
-  return new Promise((resolve,reject)=>{
-    const params = {
-      MaxResults: 1 /* required */
-    };
-    var params2= {
-      TranscriptionJobName: "" /* required */
+const getTranscription = async (id)=>{
+  return new Promise((resolve, reject) => {
+    var params= {
+      TranscriptionJobName: id /* required */
     };
     
-    try{
-      transcribeService.listTranscriptionJobs(params,function(err, data) {
-        if (err) throw err // an error occurred
-        else{
-          // console.log(data.TranscriptionJobSummaries[0].TranscriptionJobName); 
-          if (data.TranscriptionJobSummaries[0].TranscriptionJobStatus !== "COMPLETED"){
-            return resolve({
-              TranscriptionJobName:data.TranscriptionJobSummaries[0].TranscriptionJobName,
-              TranscriptionJobStatus:data.TranscriptionJobSummaries[0].TranscriptionJobStatus,
-              CreationTime:data.TranscriptionJobSummaries[0].CreationTime,
-              LanguageCode:data.TranscriptionJobSummaries[0].LanguageCode
-            })
-          }
-          params2.TranscriptionJobName = data.TranscriptionJobSummaries[0].TranscriptionJobName
-          // console.log(data.TranscriptionJobSummaries[0])
-          
-          transcribeService.getTranscriptionJob(params2, async function(err, data) {
-            if (err) throw err
-            // an error occurred
-            else{
-                let uri = await data.TranscriptionJob.Transcript.TranscriptFileUri
-                axios.get(uri).then(result=>{
-                  // console.log(result.data.results.transcripts[0].transcript)
-                  return resolve({
-                    Transcript:result.data.results.transcripts[0].transcript,
-                    LanguageCode:result.data.results.language_code,
-                    TranscriptionJobStatus:"COMPLETED",
-                  }) // successful response
-                })
-                
-            } 
-          });
-        }
-      });
-      
-    }catch(err){
-      return reject(err)
-    }
-  })
+    return transcribeService.getTranscriptionJob(params, async function(err, data) {
+      if (data.TranscriptionJob.TranscriptionJobStatus === 'COMPLETED') {
+        const result = await axios.get(data.TranscriptionJob.Transcript.TranscriptFileUri);
+        
+        const transcription = {
+          Transcript: result.data.results.transcripts[0].transcript,
+          LanguageCode: result.data.results.language_code,
+          TranscriptionJobStatus: "COMPLETED",
+        };
+        return resolve(transcription); // successful response
+      }
+      else {
+        return resolve({
+          TranscriptionJobStatus:"INCOMPLETED",
+        });
+      } 
+    });
+  });
 }
 router.get("/", async function(req, res, next) {
     
