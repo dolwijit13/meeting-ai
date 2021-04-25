@@ -37,6 +37,26 @@ export const ResultPage: React.FC<IResultPage> = (props: any) => {
                           })
                           .slice(0,5);
 
+  const entities = {
+    "Entities": [
+      {
+        "Text": "today",
+        "Score": 0.97,
+        "Type": "DATE",
+        "BeginOffset": 14,
+        "EndOffset": 19
+      },
+      {
+        "Text": "Seattle",
+        "Score": 0.95,
+        "Type": "LOCATION",
+        "BeginOffset": 23,
+        "EndOffset": 30
+      }
+    ],
+    "LanguageCode": "en"
+  };
+
   const languageChoices = languages.map((lang, idx) => (
     <div className={styles.langArea}>
       <div>{idx > 0 && '|'}</div>
@@ -58,6 +78,28 @@ export const ResultPage: React.FC<IResultPage> = (props: any) => {
         <div className={styles.label}>
           <span>Emotions:</span>
           <div className={styles.emotions}>{emotionObjects}</div>
+        </div>
+      </div>
+      <div className={styles.entitiesSection}>
+        <div className={styles.label}>
+          Entities:
+          <table id='entitries'>
+            <tbody>
+              <tr>
+                <th style={{width: "100px"}}>{'Type'}</th>
+                <th>{'Text'}</th>
+              </tr>
+              {entities["Entities"].map((entity, index) => {
+                const { Text, Type } = entity
+                return (
+                  <tr key={index}>
+                    <td>{Type}</td>
+                    <td>{Text}</td>
+                  </tr>
+                )
+              })}
+            </tbody>
+          </table>
         </div>
       </div>
       <div className={styles.recordSection}>
