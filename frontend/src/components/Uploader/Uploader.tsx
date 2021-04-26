@@ -41,7 +41,7 @@ export const Uploader: React.FC<IUploader> = (props) => {
 
     return uploaded? 
     (
-        <div className={styles.loading}>
+        <div className={styles.loader}>
             loading
         </div>
     ):

@@ -12,9 +12,6 @@ var {transcribeRouter} = require('./routes/transcribe');
 var rekognitionRouter = require('./routes/rekognition');
 var cors = require('cors');
 const fileUpload = require('express-fileupload');
-var translationRouter = require('./routes/translation');
-
-// var comprehendRouter = require('./routes/comprehend');
 
 var app = express();
 
@@ -33,9 +30,7 @@ app.use(fileUpload());
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
-app.use('/transcribe',transcribeRouter)
-app.use('/translation', translationRouter);
-// app.use('/comprehend', comprehendRouter);
+app.use('/transcribe',transcribeRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
