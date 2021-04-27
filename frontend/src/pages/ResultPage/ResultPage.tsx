@@ -13,7 +13,7 @@ export const ResultPage: React.FC<IResultPage> = (props: any) => {
   const [selectedLang, setSelectedLang] = useState<number>(0);
   const lang = ['th', 'en', 'ja'];
   const location = useLocation<any>();
-  const [record, setRecord] = useState<string>('');
+  const [record, setRecord] = useState<any>(null);
   const [entities, setEntities] = useState<any>({});
   const [translation, setTranslation] = useState<any>({});
 
@@ -48,7 +48,7 @@ export const ResultPage: React.FC<IResultPage> = (props: any) => {
                           .slice(0,5);
 
   useEffect(() => {
-    if (record === '') {
+    if (record === null) {
       const interval = setInterval(() => {
         id && axios.get(`${ENDPOINT}/getdata/${id}`)
               .then((res: any) => {
@@ -84,7 +84,7 @@ export const ResultPage: React.FC<IResultPage> = (props: any) => {
     </div>
   ));
 
-  const entitiesDisplay = record === '' ?
+  const entitiesDisplay = record === null ?
     <div className={styles.loader}>Loading...</div>:
     <table id='entitries'>
       <tbody>
@@ -118,7 +118,7 @@ export const ResultPage: React.FC<IResultPage> = (props: any) => {
       </tbody>
     </table>
 
-  const recordDisplay = record === '' ? 
+  const recordDisplay = record === null ? 
   <div className={styles.loader}>Loading...</div> : <div className={styles.recordData}>{record}</div>;
   
   return (
