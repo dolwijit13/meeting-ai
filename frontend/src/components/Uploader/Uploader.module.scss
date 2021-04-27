@@ -34,10 +34,21 @@
   justify-content: center;
   align-items: center;
   min-height: 50vh;
+  flex-direction: column;
+}
+
+:local(.labelInput) {
+  font-family: 'Mitr';
+  font-size: 24px;
+  padding-bottom: 18px;
+  color: #E4D9C5;
+  text-shadow: 4px 4px 4px rgba(0, 0, 0, 0.5);
 }
 
 input[type="file"] {
   font-family: 'Mitr';
+  font-size: 14px;
+  color: #E4D9C5;
 }
 
 ::-webkit-file-upload-button {
