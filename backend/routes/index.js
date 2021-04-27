@@ -150,7 +150,22 @@ router.get('/getdata/:id', async (req, res, next) =>{
     if (transcription.TranscriptionJobStatus !== "COMPLETED") {
       return res.send({status: "INCOMPLETE"})
     }
-    
+    if (transcription.Transcript === '') {
+		return res.send({ status: "COMPLETED", translation: {
+			en: {
+				key: ''
+			},
+			th: {
+				key: ''
+			},
+			ja: {
+				key: ''
+			}
+		}, entities: {
+			Entities: [],
+			LanguageCode: 'en'
+		} })
+	}
     const translation = await translate(transcription.Transcript);
 
     // Mock data for translation
