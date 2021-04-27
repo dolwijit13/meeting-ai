@@ -27,7 +27,7 @@ export const ResultPage: React.FC<IResultPage> = (props: any) => {
     const type = key as IRekognitionType;
     const rekognitionItem: IRekognitionItem = {
       type,
-      confidence: ((rekognition[type] || 0) / rekognition.n)
+      confidence: rekognition.n !== 0 ? ((rekognition[type] || 0) / rekognition.n) : 0
     };
     acc.push(rekognitionItem)
     return acc
