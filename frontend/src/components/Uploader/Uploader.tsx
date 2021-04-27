@@ -15,8 +15,11 @@ export const Uploader: React.FC<IUploader> = (props) => {
     const history = useHistory();
 
     const onChangeHandler = (event: any) => {
-        setSelectedFile(event.target.files[0])
-        console.log(event.target.files[0]);
+        if(event.target.files[0].type === "video/mp4") {
+          setSelectedFile(event.target.files[0]);
+        } else {
+          setSelectedFile('');
+        }
     };
 
     const handleSubmit = () => {
