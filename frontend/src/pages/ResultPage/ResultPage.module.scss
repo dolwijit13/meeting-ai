@@ -37,22 +37,21 @@
   margin-top: 24px;
 }
 
-table, th, td {
-  border: 1px solid white;
-}
-
 :local(table) {
-  border-collapse: collapse;
-  margin: auto;
+  width: 100%;
+  padding: 16px 24px 24px 16px;
   font-size: 20px;
-  color: white;
   text-shadow: none;
   font-weight: normal;
-  margin-bottom: 16px;
 }
 
-:local(td) {
-  padding: 0 8px;
+:local(.link) {
+  color: inherit;
+  cursor: pointer;
+  text-decoration: underline;
+  &:hover {
+    color: blue;
+  }
 }
 
 :local(.recordSection) {

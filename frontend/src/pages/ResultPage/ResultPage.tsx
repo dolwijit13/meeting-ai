@@ -82,18 +82,32 @@ export const ResultPage: React.FC<IResultPage> = (props: any) => {
     <div className={styles.loader}>Loading...</div>:
     <table id='entitries'>
       <tbody>
-        <tr>
+        {/* <tr>
           <th style={{width: "100px"}}>{'Type'}</th>
           <th>{'Text'}</th>
-        </tr>
+        </tr> */}
         {entities["Entities"].map((entity: { Text: string; Type: string; }, index: number) => {
           const { Text, Type } = entity
-          return (
-            <tr key={index}>
-              <td>{Type}</td>
-              <td>{Text}</td>
-            </tr>
-          )
+          if (Type === "COMMERCIAL_ITEM" || Type === "EVENT" || Type === "LOCATION" || Type === "ORGANIZATION" || Type === "TITLE") {
+            return (
+              <tr key={index}>
+                <td style={{width: "136px"}}>{Type}</td>
+                <td style={{width: "calc(100% - 136px)"}}>
+                  <a href={`https://www.google.com/search?q=${Text}`} target="_blank" className={styles.link}>
+                    {Text}
+                    <img src={require(`../../images/external_link.svg`).default} alt="" style={{margin: "-6px 0"}} />
+                  </a>
+                </td>
+              </tr>
+            )
+          } else {
+            return (
+              <tr key={index}>
+                <td style={{width: "136px"}}>{Type}</td>
+                <td style={{width: "calc(100% - 136px)"}}>{Text}</td>
+              </tr>
+            )
+          }
         })}
       </tbody>
     </table>
