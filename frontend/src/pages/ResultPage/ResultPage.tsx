@@ -56,7 +56,9 @@ export const ResultPage: React.FC<IResultPage> = (props: any) => {
                   setTranslation(res.data.translation);
                   setEntities(res.data.entities);
                   setRecord(res.data.translation[lang[selectedLang]].key);
-                  clearInterval(interval);            
+                  clearInterval(interval);
+                } else if(res.data.status === "FAILED") {
+                  clearInterval(interval);
                 }
               })
               .catch((error: any) => {

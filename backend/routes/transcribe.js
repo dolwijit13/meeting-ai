@@ -52,7 +52,7 @@ const getTranscription = async (id)=>{
       }
       else {
         return resolve({
-          TranscriptionJobStatus:"INCOMPLETED",
+          TranscriptionJobStatus: data.TranscriptionJob.TranscriptionJobStatus,
         });
       } 
     });

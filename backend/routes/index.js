@@ -142,10 +142,14 @@ router.get('/getdata/:id', async (req, res, next) =>{
     //   to seafood but I can eat fish. So don't worry about that due to the distance while he is not far from Bangkok. So we can save the cost. I also agree with C. All right. We decided to go to who are heating and we will talk about accommodation next time. Thank you all for today.`
     // }
 		
-		if (transcription === null || transcription.TranscriptionJobStatus != "COMPLETED"){
+		if (transcription === null || transcription.TranscriptionJobStatus === "FAILED"){
       // send sth to tell client that it hasn't finished
-			return res.send({status: "INCOMPLETED"})
+			return res.send({status: "FAILED"})
 		}
+
+    if (transcription.TranscriptionJobStatus !== "COMPLETED") {
+      return res.send({status: "INCOMPLETE"})
+    }
     
     const translation = await translate(transcription.Transcript);
 
