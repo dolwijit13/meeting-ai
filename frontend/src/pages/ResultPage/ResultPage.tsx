@@ -117,9 +117,9 @@ export const ResultPage: React.FC<IResultPage> = (props: any) => {
   
   return (
     <div className={styles.bg}>
-      <div className={styles.langsArea}>
+      {record && <div className={styles.langsArea}>
         {languageChoices}
-      </div>
+      </div>}
       <div className={styles.header}>
         Result
       </div>

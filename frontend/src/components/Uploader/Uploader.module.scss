@@ -34,11 +34,11 @@ input[type="file"] {
 
 ::-webkit-file-upload-button {
   background: #C4C4C4;
-  height: 56px;
-  width: 120px;
+  height: 48px;
+  width: 96px;
   border-radius: 8px;
-  font-size: 24px;
-  border: none;
+  font-size: 14px;
+  cursor: pointer;
 }
 
 .loader,
