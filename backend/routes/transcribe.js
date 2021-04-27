@@ -20,7 +20,7 @@ const createTranscription = (uri, id)=>{
         MediaFileUri: uri
       },
       TranscriptionJobName: id,
-      LanguageCode : "es-US",
+      LanguageCode : "en-US",
     };
     transcribeService.startTranscriptionJob(params, function(err, data) {
       if (err) reject(err);
