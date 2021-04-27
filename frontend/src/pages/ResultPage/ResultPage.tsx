@@ -17,6 +17,10 @@ export const ResultPage: React.FC<IResultPage> = (props: any) => {
   const [entities, setEntities] = useState<any>({});
   const [translation, setTranslation] = useState<any>({});
 
+  if(!location.state) {
+    window.location.href = "/";
+  }
+
   const { rekognition, id } = location.state;
   const rekognitionArray: IRekognitionItem[] = Object.keys(rekognition).reduce((acc: IRekognitionItem[], key: string) => {
     if(key === 'n') return acc
