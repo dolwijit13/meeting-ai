@@ -12,12 +12,20 @@
   display: flex;
   background: #576B6B;
   cursor: not-allowed;
+
+  &:hover {
+    background: #576B6B;
+  }
 }
 
 :local(.enabledSubmitButton) {
   display: flex;
   background: #C09C6A;
   color: black;
+
+  &:hover {
+    background: #997c54;
+  }
 }
 
 

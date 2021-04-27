@@ -48,7 +48,7 @@ export const Uploader: React.FC<IUploader> = (props) => {
     (
         <div>
             <div className={styles.inputWrapper}>
-                <input type="file" name="file" onChange={onChangeHandler} />
+                <input type="file" name="file" onChange={onChangeHandler} accept=".mp4" />
             </div>
             <div className={styles.footer}>
                 <Button content={"Submit"} onClick={handleSubmit} classname={submitStyle} />
