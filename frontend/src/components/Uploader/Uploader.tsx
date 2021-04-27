@@ -51,7 +51,7 @@ export const Uploader: React.FC<IUploader> = (props) => {
     (
         <div>
             <div className={styles.inputWrapper}>
-                <div className={styles.labelInput}>Accept only mp4 video from zoom recording <br /> (at least 1 person speaking)</div>
+                <div className={styles.labelInput}>Accept only mp4 video from zoom recording</div>
                 <input type="file" name="file" onChange={onChangeHandler} accept=".mp4" />
             </div>
             <div className={styles.footer}>
