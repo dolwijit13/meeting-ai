@@ -6,6 +6,8 @@ Sumet Chorthongdee 	6031058221
 Itthithee Leelachutipong	6031062721
 Dolwijit Jiradilok		6031310321
 
+------------
+
 ### Project Motivation
 Due to COVID-19, the online meeting is held much more than the past. Sometimes, we are easily distracted by the environment or maybe you cannot attend the meeting. So, we present a web-app that lets you send the recorded video of the meeting, then it will make a summary of your meeting. This web can be useful during this social distancing policy and also on normal meetings to increase the performance of your meeting by analyzing your meeting to make it better and better next time.
 
@@ -15,6 +17,8 @@ Due to COVID-19, the online meeting is held much more than the past. Sometimes, 
 - Detect the emotions of attendees to measure the mood of the meeting
 - List the entities from the meeting conversation to tell the roughly topic of the meeting
 - Translate the meeting conversation from English to Thai and Japanese
+
+------------
 
 ### Solution
 #### Software components (Services used)
@@ -66,6 +70,8 @@ VM for deploying web application for frontend and deploying server for backend
 9. After the Transcribe has finished the transcription, the server sends the transcription's text to the Translate and the Comprehend services and waits for the results.
 10. The server returns the Transcribe, the Translate and the Comprehend results to the web application, then the web application stops polling.
 11. The web application updates the result page with the Transcribe, the Translate and the Comprehend results.
+
+------------
 
 ### How to deploy the source code
 #### Backend
